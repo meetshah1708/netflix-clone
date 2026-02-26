@@ -1,4 +1,28 @@
 .home{
     background-color: var(--main-color);
     overflow-x: hidden;
+
+    .homeSearch{
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px 50px 0;
+
+        input{
+            width: min(420px, 100%);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 4px;
+            padding: 10px 14px;
+            background-color: rgba(0, 0, 0, 0.45);
+            color: white;
+        }
+    }
+
+    .homeStatus{
+        color: #f5f5f5;
+        margin: 12px 50px;
+
+        &.error{
+            color: #ff9f9f;
+        }
+    }
 }
