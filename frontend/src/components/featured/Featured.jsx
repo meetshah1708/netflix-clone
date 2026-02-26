@@ -22,8 +22,8 @@ export default function Featured({ type , setGenre }) {
                 console.log(error)
             }
         }
-        return () => getRandom()
-    },[])
+        getRandom()
+    }, [])
     return (
         <div className="featured">
             {type && (

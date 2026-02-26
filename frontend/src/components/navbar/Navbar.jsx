@@ -1,15 +1,22 @@
 import { ArrowDropDown, Notifications, Search } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./navbar.scss";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
     const [ isScrolled, setIsScrolled ] = useState(false);
 
-    window.onscroll = () => {
-        setIsScrolled(window.scrollY === 0 ? false : true);
-        return () => (window.onscroll = null);
-    };
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY !== 0);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
     return (
         <div className={isScrolled ? "navbar scrolled" : "navbar"}>
             <div className="container">

@@ -2,44 +2,65 @@ import Navbar from "../../components/navbar/Navbar";
 import Featured from "../../components/featured/Featured";
 import "./home.scss";
 import List from "../../components/list/List";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-// import axios from 'axios'
+import { buildListQuery } from "./homeQuery";
 
 const Home = ({ type }) => {
-    const [ lists, setLists ] = useState([])
-    const [ genre, setGenre ] = useState(null)
+    const [lists, setLists] = useState([]);
+    const [genre, setGenre] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [reloadCount, setReloadCount] = useState(0);
+
     useEffect(() => {
         const getRandomLists = async () => {
+            setIsLoading(true);
+            setError("");
+
             try {
-                const typeParam = type ? "?type=" + type : "";
-                const genreParam = genre ? (type ? "&genre=" : "?genre=") + genre : "";
-                const response = await fetch(`/api/lists${typeParam}${genreParam}`);
+                const query = buildListQuery(type, genre);
+                const response = await fetch(`/api/lists${query}`);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load lists (${response.status})`);
+                }
+
                 const data = await response.json();
-                console.log(data);
-                setLists(data);
+                setLists(Array.isArray(data) ? data : []);
             } catch (err) {
-                console.log(err.message);
+                setError(err.message || "Unable to load lists right now.");
+            } finally {
+                setIsLoading(false);
             }
         };
 
-        return () => getRandomLists()
-    }, [ type, genre ])
+        getRandomLists();
+    }, [type, genre, reloadCount]);
+
     return (
         <div className="home">
             <Navbar />
             <Featured type={type} setGenre={setGenre} />
-            {lists.map((list ) => (
 
-                <List list={list} key={list.id}  />
-            ))}
+            {isLoading && <p className="statusMessage">Loading titles...</p>}
 
+            {!isLoading && error && (
+                <div className="statusMessage errorMessage">
+                    <p>{error}</p>
+                    <button type="button" onClick={() => setReloadCount((prev) => prev + 1)}>
+                        Retry
+                    </button>
+                </div>
+            )}
+
+            {!isLoading && !error &&
+                lists.map((list) => <List list={list} key={list._id || list.id} />)}
         </div>
     );
 };
 
-
 export default Home;
 Home.propTypes = {
-    type: PropTypes.any
-}
+    type: PropTypes.any,
+};

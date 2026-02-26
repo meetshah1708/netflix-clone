@@ -11,7 +11,7 @@ import { Link, NavLink } from "react-router-dom";
 
 export default function ListItem({ index, item }) {
     const [ isHovered, setIsHovered ] = useState(false);
-    const [ movie, setMovie ] = useState([])  //put initial state to [] instead of null to avoid getting error of data fetching after refresh
+    const [ movie, setMovie ] = useState({})  //put initial state to [] instead of null to avoid getting error of data fetching after refresh
     useEffect(() => {
         const getMovies = async () => {
             try {
@@ -25,7 +25,7 @@ export default function ListItem({ index, item }) {
             }
 
         }
-        return () => getMovies()
+        getMovies()
     }, [ item ])
     return (
         <div
