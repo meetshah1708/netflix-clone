@@ -1,4 +1,26 @@
-.home{
+.home {
     background-color: var(--main-color);
     overflow-x: hidden;
+
+    .statusMessage {
+        color: white;
+        margin: 1rem 3rem;
+        font-size: 1rem;
+    }
+
+    .errorMessage {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        button {
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            background-color: #e50914;
+        }
+    }
 }
