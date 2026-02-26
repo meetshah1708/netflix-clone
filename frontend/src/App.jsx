@@ -10,20 +10,20 @@ import {
 
 
 function App() {
-const user = false
+const user = JSON.parse(localStorage.getItem("user"))
 
     return (
-        <>  
-            
-            {/* <Home/>   cannot declare a 
+        <>
+
+            {/* <Home/>   cannot declare a
             component above browserRouter that uses Navlink which should be inside Router  */}
             <BrowserRouter>
                 <Routes>
-              
-                   <Route exact path="/" element={user ? <Home/> : <Register/>}></Route> 
+
+                   <Route exact path="/" element={user ? <Home/> : <Register/>}></Route>
                     <Route path="/register" element={ !user ?<Register/> :<Home/>}></Route>
                     <Route path="/login" element={!user ?<Login/> : <Home/>}></Route>
-                    
+
                     {user &&
                         <>
                             <Route path="/series" element={<Home type="series" />}></Route>
